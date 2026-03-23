@@ -11,154 +11,182 @@
 <style>
 
 /* ===== GLOBAL ===== */
-html{scroll-behavior:smooth;}
 *{margin:0;padding:0;box-sizing:border-box;}
-
 body{
     font-family:'Libre Caslon Text',serif;
-    color:black;
-    overflow-x:hidden;
+    color:#fff;
+    background:#000;
 }
 
-/* ===== LOADING SCREEN ===== */
+/* ===== LOADER (SUBTLE) ===== */
 #loader{
     position:fixed;
     inset:0;
-    background:#111;
-    color:white;
+    background:#000;
     display:flex;
     justify-content:center;
     align-items:center;
-    font-size:28px;
+    color:#d4af37;
     z-index:9999;
-    letter-spacing:3px;
 }
+.glitch{
+    position:relative;
+    font-size:28px;
+}
+.glitch::before,.glitch::after{
+    content:"EDITRHK";
+    position:absolute;
+    left:0;
+    opacity:.6;
+}
+.glitch::before{color:red;animation:g1 2s infinite;}
+.glitch::after{color:blue;animation:g2 2s infinite;}
+@keyframes g1{50%{transform:translate(-1px,1px);}}
+@keyframes g2{50%{transform:translate(1px,-1px);}}
 
-/* ===== BACKGROUND ===== */
-body::before{
-    content:"";
+/* ===== HEADER ===== */
+.header{
     position:fixed;
-    inset:0;
-    z-index:-2;
-
-    background:linear-gradient(
-        45deg,
-        #bfa98f,
-        #8f7f6a,
-        #9ca9b5,
-        #6e5f4d
-    );
-
-    background-size:400% 400%;
-    animation:gradient 120s ease infinite;
-}
-
-@keyframes gradient{
-    0%{background-position:0% 50%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 50%}
-}
-
-/* ===== GLASS ===== */
-.glass{
-    background:rgba(255,255,255,0.15);
-    backdrop-filter:blur(25px);
-    border-radius:30px;
-    border:1px solid rgba(212,175,55,0.35);
-    box-shadow:0 30px 80px rgba(0,0,0,0.25);
-}
-
-/* ===== HERO ===== */
-.hero-wrap{
+    top:0;
+    width:100%;
+    padding:15px 40px;
     display:flex;
-    justify-content:center;
-    padding:140px 20px 80px;
-    perspective:1000px;
+    justify-content:space-between;
+    align-items:center;
+    backdrop-filter:blur(15px);
+    background:rgba(0,0,0,0.6);
+    border-bottom:1px solid rgba(212,175,55,0.2);
+    z-index:1000;
+    transition:.3s;
 }
 
-.hero{
-    text-align:center;
-    padding:60px;
-    max-width:900px;
+/* PROFILE ALIGN FIX */
+.profile-box{
+    display:flex;
+    align-items:center;
+    gap:15px;
 }
-
-.profile{
-    width:180px;
-    height:180px;
+.profile-box img{
+    width:60px;
+    height:60px;
     border-radius:50%;
-    object-fit:cover;
+    border:2px solid #d4af37;
 }
-
-h1{font-size:42px;margin-top:25px;}
-p{margin-top:18px;line-height:1.7;}
-
-/* ===== WORK ===== */
-.work-title{
-    text-align:center;
-    font-size:30px;
-    margin:40px 0;
+.profile-text{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
 }
-
-.work{
-    padding:80px 8%;
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:40px;
+.profile-text h1{
+    font-size:20px;
+    line-height:1.2;
+}
+.profile-text p{
+    font-size:11px;
+    color:#bbb;
+    margin-top:4px;
 }
 
 /* ===== TABS ===== */
 .tabs{
     display:flex;
-    justify-content:center;
-    gap:20px;
-    margin-bottom:40px;
+    gap:15px;
 }
-
 .tab{
-    padding:10px 25px;
-    border-radius:30px;
-    cursor:pointer;
-    border:1px solid rgba(0,0,0,0.2);
-    background:rgba(255,255,255,0.2);
-    transition:.3s;
-}
-
-.tab.active{
-    background:black;
-    color:white;
-}
-
-.tab-content{display:none;}
-.tab-content.active{display:grid;}
-
-/* ===== CARDS ===== */
-.card{
-    overflow:hidden;
+    padding:6px 14px;
+    border:1px solid rgba(212,175,55,0.4);
     border-radius:20px;
+    font-size:12px;
+    cursor:pointer;
+}
+.tab.active,.tab:hover{
+    background:#d4af37;
+    color:#000;
 }
 
-.card iframe{
+/* ===== WORK ===== */
+.work{
+    padding:130px 8% 60px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:40px;
+}
+
+/* reels mode */
+.work.reels-mode{
+    grid-template-columns:repeat(4,1fr);
+}
+.work.reels-mode iframe{
+    aspect-ratio:9/16;
+}
+
+/* ===== CARD HOVER ===== */
+.card{
+    border-radius:20px;
+    overflow:hidden;
+    transition:.4s ease;
+}
+.card:hover{
+    transform:translateY(-10px) scale(1.03);
+    box-shadow:0 10px 40px rgba(212,175,55,0.25);
+}
+
+/* ===== VIDEO ===== */
+.video-wrap{
+    position:relative;
+    cursor:pointer;
+}
+.video-wrap iframe{
     width:100%;
     aspect-ratio:16/9;
     border:none;
 }
 
-.reel iframe{
-    aspect-ratio:9/16;
+/* ===== OVERLAY ===== */
+.overlay{
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,0.5);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:18px;
+    opacity:0;
+    transform:translateY(10px);
+    transition:.35s ease;
+}
+.video-wrap:hover .overlay{
+    opacity:1;
+    transform:translateY(0);
 }
 
-.card:hover{
-    transform:translateY(-10px);
+/* ===== MODAL ===== */
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.9);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:2000;
+}
+.modal-content{
+    max-width:800px;
+    width:90%;
+}
+.modal iframe{
+    width:100%;
+    aspect-ratio:16/9;
 }
 
 /* ===== FOOTER ===== */
 .footer{
-    margin-top:100px;
     padding:60px;
     text-align:center;
+    color:#ccc;
 }
 
-/* ===== MOBILE ===== */
+/* MOBILE */
 @media(max-width:900px){
     .work{grid-template-columns:1fr;}
 }
@@ -168,72 +196,111 @@ p{margin-top:18px;line-height:1.7;}
 
 <body>
 
-<div id="loader">EDITRHK</div>
+<!-- LOADER -->
+<div id="loader">
+    <div class="glitch">EDITRHK</div>
+</div>
 
-<!-- HERO -->
-<div class="hero-wrap">
-<div class="hero glass">
+<!-- HEADER -->
+<div class="header">
 
-<img src="image1.png" class="profile">
+    <div class="profile-box">
+        <img src="image1.png">
+        <div class="profile-text">
+            <h1>Rah Hil Khan</h1>
+            <p>Content Creator • AI Specialist • Video Editor</p>
+        </div>
+    </div>
 
-<h1>Rah Hil Khan</h1>
-<p>
-Content Creator • AI Specialist • Video Editor<br><br>
-Cinematic storytelling for weddings, events,
-brands and AI-powered visuals worldwide.
-</p>
+    <div class="tabs">
+        <div class="tab active" data-filter="all">All</div>
+        <div class="tab" data-filter="reels">Reels</div>
+        <div class="tab" data-filter="commercials">Commercials</div>
+        <div class="tab" data-filter="events">Events</div>
+        <div class="tab" data-filter="ai">AI Videos</div>
+    </div>
 
+</div>
+
+<!-- WORK -->
+<section class="work" id="work">
+
+<!-- VIDEOS (UNCHANGED) -->
+<div class="card" data-category="events" data-title="Event Film" data-desc="Cinematic wedding/event storytelling.">
+<div class="video-wrap">
+<iframe src="https://www.youtube.com/embed/dKnHwncJd8w"></iframe>
+<div class="overlay">Event Film</div>
 </div>
 </div>
 
-<h2 class="work-title">MY WORK</h2>
-
-<!-- TABS -->
-<div class="tabs">
-    <div class="tab active" onclick="showTab('all', this)">All</div>
-    <div class="tab" onclick="showTab('reels', this)">Reels</div>
-    <div class="tab" onclick="showTab('ai', this)">AI Videos</div>
+<div class="card" data-category="commercials">
+<div class="video-wrap">
+<iframe src="https://www.youtube.com/embed/xtP1h6M-BhE"></iframe>
+<div class="overlay">Commercial</div>
+</div>
 </div>
 
-<!-- ALL -->
-<section class="work tab-content active" id="all">
+<div class="card" data-category="ai">
+<div class="video-wrap">
+<iframe src="https://www.youtube.com/embed/RQ4hMpByvW8"></iframe>
+<div class="overlay">AI Film</div>
+</div>
+</div>
 
-<div class="card glass"><iframe src="https://www.youtube.com/embed/dKnHwncJd8w"></iframe></div>
-<div class="card glass"><iframe src="https://www.youtube.com/embed/xtP1h6M-BhE"></iframe></div>
-<div class="card glass"><iframe src="https://www.youtube.com/embed/RQ4hMpByvW8"></iframe></div>
-<div class="card glass"><iframe src="https://www.youtube.com/embed/xLkA5XFgEtE"></iframe></div>
-<div class="card glass"><iframe src="https://www.youtube.com/embed/IhEfeBIoBrk"></iframe></div>
-<div class="card glass"><iframe src="https://www.youtube.com/embed/6KqZWw7Z1D4"></iframe></div>
+<div class="card" data-category="reels">
+<div class="video-wrap">
+<iframe src="https://www.youtube.com/embed/xLkA5XFgEtE"></iframe>
+<div class="overlay">Reel</div>
+</div>
+</div>
+
+<div class="card" data-category="events">
+<div class="video-wrap">
+<iframe src="https://www.youtube.com/embed/IhEfeBIoBrk"></iframe>
+<div class="overlay">Event</div>
+</div>
+</div>
+
+<div class="card" data-category="commercials">
+<div class="video-wrap">
+<iframe src="https://www.youtube.com/embed/6KqZWw7Z1D4"></iframe>
+<div class="overlay">Ad Film</div>
+</div>
+</div>
+
+<div class="card" data-category="ai">
+<div class="video-wrap">
+<iframe src="https://www.youtube.com/embed/9i0ju0_MxlU"></iframe>
+<div class="overlay">AI Visual</div>
+</div>
+</div>
+
+<div class="card" data-category="reels">
+<div class="video-wrap">
+<iframe src="https://www.youtube.com/embed/3ij7H_F44N4"></iframe>
+<div class="overlay">Reel</div>
+</div>
+</div>
+
+<div class="card" data-category="events">
+<div class="video-wrap">
+<iframe src="https://www.youtube.com/embed/hpizmJJ_ZX0"></iframe>
+<div class="overlay">Event</div>
+</div>
+</div>
 
 </section>
 
-<!-- REELS -->
-<section class="work tab-content" id="reels">
-
-<div class="card glass reel">
-<iframe src="https://www.youtube.com/embed/YOUR_SHORT_ID"></iframe>
+<!-- MODAL -->
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <iframe id="modalVideo"></iframe>
+        <h2 id="modalTitle"></h2>
+        <p id="modalDesc"></p>
+    </div>
 </div>
 
-<div class="card glass reel">
-<iframe src="https://www.youtube.com/embed/YOUR_SHORT_ID2"></iframe>
-</div>
-
-</section>
-
-<!-- AI VIDEOS -->
-<section class="work tab-content" id="ai">
-
-<div class="card glass">
-<iframe src="https://www.youtube.com/embed/YOUR_AI_VIDEO"></iframe>
-</div>
-
-<div class="card glass">
-<iframe src="https://www.youtube.com/embed/YOUR_AI_VIDEO2"></iframe>
-</div>
-
-</section>
-
-<footer class="footer glass">
+<footer class="footer">
 <b>Contact</b><br><br>
 Email : professionalrhk@gmail.com  |  Instagram : @edit.rhk
 </footer>
@@ -241,21 +308,49 @@ Email : professionalrhk@gmail.com  |  Instagram : @edit.rhk
 <script>
 
 /* LOADER */
-window.onload=()=>setTimeout(()=>{
-    document.getElementById("loader").style.display="none";
-},1200);
+window.onload=()=>document.getElementById("loader").style.display="none";
 
-/* TAB SWITCH */
-function showTab(id, el){
-    document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
-    el.classList.add("active");
+/* FILTER + REELS MODE */
+const tabs=document.querySelectorAll(".tab");
+const cards=document.querySelectorAll(".card");
+const work=document.getElementById("work");
 
-    document.querySelectorAll(".tab-content").forEach(c=>{
-        c.classList.remove("active");
-    });
+tabs.forEach(tab=>{
+    tab.onclick=()=>{
+        tabs.forEach(t=>t.classList.remove("active"));
+        tab.classList.add("active");
 
-    document.getElementById(id).classList.add("active");
-}
+        let f=tab.dataset.filter;
+
+        work.classList.toggle("reels-mode", f==="reels");
+
+        cards.forEach(c=>{
+            c.style.display=(f==="all"||c.dataset.category===f)?"block":"none";
+        });
+    };
+});
+
+/* MODAL */
+const modal=document.getElementById("modal");
+const modalVideo=document.getElementById("modalVideo");
+
+document.querySelectorAll(".video-wrap").forEach(w=>{
+    w.onclick=()=>{
+        modal.style.display="flex";
+        modalVideo.src=w.querySelector("iframe").src+"?autoplay=1";
+    };
+});
+
+modal.onclick=()=>{
+    modal.style.display="none";
+    modalVideo.src="";
+};
+
+/* HEADER SHRINK */
+const header=document.querySelector(".header");
+window.addEventListener("scroll",()=>{
+    header.style.padding=window.scrollY>50?"10px 30px":"15px 40px";
+});
 
 </script>
 
