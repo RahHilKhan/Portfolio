@@ -3,355 +3,290 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-
 <title>Rah Hil Khan Portfolio</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
-
-/* ===== GLOBAL ===== */
 *{margin:0;padding:0;box-sizing:border-box;}
+
 body{
-    font-family:'Libre Caslon Text',serif;
-    color:#fff;
-    background:#000;
+font-family:'Libre Caslon Text',serif;
+background:#000;color:#fff;
+
+display:flex;
+flex-direction:column;
+min-height:100vh;
 }
 
-/* ===== LOADER (SUBTLE) ===== */
-#loader{
-    position:fixed;
-    inset:0;
-    background:#000;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    color:#d4af37;
-    z-index:9999;
-}
-.glitch{
-    position:relative;
-    font-size:28px;
-}
-.glitch::before,.glitch::after{
-    content:"EDITRHK";
-    position:absolute;
-    left:0;
-    opacity:.6;
-}
-.glitch::before{color:red;animation:g1 2s infinite;}
-.glitch::after{color:blue;animation:g2 2s infinite;}
-@keyframes g1{50%{transform:translate(-1px,1px);}}
-@keyframes g2{50%{transform:translate(1px,-1px);}}
-
-/* ===== HEADER ===== */
+/* HEADER */
 .header{
-    position:fixed;
-    top:0;
-    width:100%;
-    padding:15px 40px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    backdrop-filter:blur(15px);
-    background:rgba(0,0,0,0.6);
-    border-bottom:1px solid rgba(212,175,55,0.2);
-    z-index:1000;
-    transition:.3s;
+position:fixed;top:0;width:100%;
+padding:15px 40px;
+display:flex;justify-content:space-between;align-items:center;
+background:rgba(0,0,0,0.6);
+backdrop-filter:blur(15px);
+z-index:1000;
 }
 
-/* PROFILE ALIGN FIX */
-.profile-box{
-    display:flex;
-    align-items:center;
-    gap:15px;
-}
-.profile-box img{
-    width:60px;
-    height:60px;
-    border-radius:50%;
-    border:2px solid #d4af37;
-}
-.profile-text{
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-}
-.profile-text h1{
-    font-size:20px;
-    line-height:1.2;
-}
-.profile-text p{
-    font-size:11px;
-    color:#bbb;
-    margin-top:4px;
-}
+.profile-box{display:flex;align-items:center;gap:15px;}
+.profile-box img{width:60px;height:60px;border-radius:50%;border:2px solid #d4af37;}
+.profile-text h1{font-size:20px;}
+.profile-text p{font-size:11px;color:#bbb;}
 
-/* ===== TABS ===== */
-.tabs{
-    display:flex;
-    gap:15px;
-}
+.tabs{display:flex;gap:15px;}
 .tab{
-    padding:6px 14px;
-    border:1px solid rgba(212,175,55,0.4);
-    border-radius:20px;
-    font-size:12px;
-    cursor:pointer;
+padding:6px 14px;border:1px solid rgba(212,175,55,0.4);
+border-radius:20px;font-size:12px;cursor:pointer;
 }
-.tab.active,.tab:hover{
-    background:#d4af37;
-    color:#000;
+.tab.active,.tab:hover{background:#d4af37;color:#000;}
+
+/* MAIN FIX */
+main{
+flex:1;
 }
 
-/* ===== WORK ===== */
-.work{
-    padding:130px 8% 60px;
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:40px;
+/* SECTIONS */
+.section{
+display:none;
+padding:130px 8% 60px;
+grid-template-columns:repeat(3,1fr);
+gap:40px;
 }
+.section.active{display:grid;}
+.section.reels img{aspect-ratio:9/16;object-fit:cover;}
 
-/* reels mode */
-.work.reels-mode{
-    grid-template-columns:repeat(4,1fr);
-}
-.work.reels-mode iframe{
-    aspect-ratio:9/16;
-}
-
-/* ===== CARD HOVER ===== */
+/* CARD */
 .card{
-    border-radius:20px;
-    overflow:hidden;
-    transition:.4s ease;
+border-radius:20px;
+overflow:hidden;
+transition:.4s;
 }
 .card:hover{
-    transform:translateY(-10px) scale(1.03);
-    box-shadow:0 10px 40px rgba(212,175,55,0.25);
+transform:translateY(-10px) scale(1.03);
+box-shadow:0 10px 40px rgba(212,175,55,0.25);
 }
 
-/* ===== VIDEO ===== */
+/* VIDEO */
 .video-wrap{
-    position:relative;
-    cursor:pointer;
+position:relative;
+cursor:pointer;
+overflow:hidden;
 }
-.video-wrap iframe{
-    width:100%;
-    aspect-ratio:16/9;
-    border:none;
+.video-wrap img{
+width:100%;
+transition:.4s;
+}
+.video-wrap:hover img{
+transform:scale(1.05);
+filter:brightness(0.8);
 }
 
-/* ===== OVERLAY ===== */
+/* OVERLAY */
 .overlay{
-    position:absolute;
-    inset:0;
-    background:rgba(0,0,0,0.5);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:18px;
-    opacity:0;
-    transform:translateY(10px);
-    transition:.35s ease;
+position:absolute;inset:0;
+display:flex;justify-content:center;align-items:center;
+background:rgba(0,0,0,0.4);
+opacity:0;transition:.3s;
 }
-.video-wrap:hover .overlay{
-    opacity:1;
-    transform:translateY(0);
-}
+.video-wrap:hover .overlay{opacity:1;}
 
-/* ===== MODAL ===== */
+/* MODAL */
 .modal{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,0.9);
-    display:none;
-    justify-content:center;
-    align-items:center;
-    z-index:2000;
-}
-.modal-content{
-    max-width:800px;
-    width:90%;
+position:fixed;inset:0;
+background:rgba(0,0,0,0.95);
+display:none;
+flex-direction:column;
+justify-content:center;align-items:center;
+z-index:2000;
 }
 .modal iframe{
-    width:100%;
-    aspect-ratio:16/9;
+width:80%;max-width:900px;
+aspect-ratio:16/9;
 }
+.modal h2{margin-top:20px;}
+.modal p{color:#bbb;margin-top:10px;text-align:center;}
 
-/* ===== FOOTER ===== */
+/* FOOTER */
 .footer{
-    padding:60px;
-    text-align:center;
-    color:#ccc;
+text-align:center;
+padding:60px;
+color:#ccc;
+margin-top:auto;
 }
-
-/* MOBILE */
-@media(max-width:900px){
-    .work{grid-template-columns:1fr;}
-}
-
 </style>
 </head>
 
 <body>
 
-<!-- LOADER -->
-<div id="loader">
-    <div class="glitch">EDITRHK</div>
-</div>
-
 <!-- HEADER -->
 <div class="header">
-
-    <div class="profile-box">
-        <img src="image1.png">
-        <div class="profile-text">
-            <h1>Rah Hil Khan</h1>
-            <p>Content Creator • AI Specialist • Video Editor</p>
-        </div>
-    </div>
-
-    <div class="tabs">
-        <div class="tab active" data-filter="all">All</div>
-        <div class="tab" data-filter="reels">Reels</div>
-        <div class="tab" data-filter="commercials">Commercials</div>
-        <div class="tab" data-filter="events">Events</div>
-        <div class="tab" data-filter="ai">AI Videos</div>
-    </div>
-
-</div>
-
-<!-- WORK -->
-<section class="work" id="work">
-
-<!-- VIDEOS (UNCHANGED) -->
-<div class="card" data-category="events" data-title="Event Film" data-desc="Cinematic wedding/event storytelling.">
-<div class="video-wrap">
-<iframe src="https://www.youtube.com/embed/dKnHwncJd8w"></iframe>
-<div class="overlay">Event Film</div>
+<div class="profile-box">
+<img src="image1.png">
+<div class="profile-text">
+<h1>Rah Hil Khan</h1>
+<p>Content Creator • AI Specialist • Video Editor</p>
 </div>
 </div>
 
-<div class="card" data-category="commercials">
-<div class="video-wrap">
-<iframe src="https://www.youtube.com/embed/xtP1h6M-BhE"></iframe>
-<div class="overlay">Commercial</div>
+<div class="tabs">
+<div class="tab active" data-tab="all">All</div>
+<div class="tab" data-tab="reels">Reels</div>
+<div class="tab" data-tab="commercials">Commercials</div>
+<div class="tab" data-tab="events">Events</div>
+<div class="tab" data-tab="ai">AI Videos</div>
 </div>
 </div>
 
-<div class="card" data-category="ai">
-<div class="video-wrap">
-<iframe src="https://www.youtube.com/embed/RQ4hMpByvW8"></iframe>
-<div class="overlay">AI Film</div>
-</div>
-</div>
+<main>
 
-<div class="card" data-category="reels">
-<div class="video-wrap">
-<iframe src="https://www.youtube.com/embed/xLkA5XFgEtE"></iframe>
-<div class="overlay">Reel</div>
-</div>
-</div>
+<!-- ALL (UNCHANGED 9 VIDEOS) -->
+<section class="section active" id="all">
 
-<div class="card" data-category="events">
-<div class="video-wrap">
-<iframe src="https://www.youtube.com/embed/IhEfeBIoBrk"></iframe>
-<div class="overlay">Event</div>
-</div>
-</div>
+<div class="card"><div class="video-wrap" data-video="dKnHwncJd8w" data-title="Event Film" data-desc="Cinematic wedding/event storytelling."><img src="https://img.youtube.com/vi/dKnHwncJd8w/maxresdefault.jpg"><div class="overlay">Event</div></div></div>
 
-<div class="card" data-category="commercials">
-<div class="video-wrap">
-<iframe src="https://www.youtube.com/embed/6KqZWw7Z1D4"></iframe>
-<div class="overlay">Ad Film</div>
-</div>
-</div>
+<div class="card"><div class="video-wrap" data-video="xtP1h6M-BhE" data-title="Commercial" data-desc="Brand storytelling."><img src="https://img.youtube.com/vi/xtP1h6M-BhE/maxresdefault.jpg"><div class="overlay">Commercial</div></div></div>
 
-<div class="card" data-category="ai">
-<div class="video-wrap">
-<iframe src="https://www.youtube.com/embed/9i0ju0_MxlU"></iframe>
-<div class="overlay">AI Visual</div>
-</div>
-</div>
+<div class="card"><div class="video-wrap" data-video="RQ4hMpByvW8" data-title="AI Film" data-desc="AI visuals."><img src="https://img.youtube.com/vi/RQ4hMpByvW8/maxresdefault.jpg"><div class="overlay">AI</div></div></div>
 
-<div class="card" data-category="reels">
-<div class="video-wrap">
-<iframe src="https://www.youtube.com/embed/3ij7H_F44N4"></iframe>
-<div class="overlay">Reel</div>
-</div>
-</div>
+<div class="card"><div class="video-wrap" data-video="xLkA5XFgEtE" data-title="Event Film" data-desc="Cinematic wedding/event storytelling."><img src="https://img.youtube.com/vi/xLkA5XFgEtE/maxresdefault.jpg"><div class="overlay">Reel</div></div></div>
 
-<div class="card" data-category="events">
-<div class="video-wrap">
-<iframe src="https://www.youtube.com/embed/hpizmJJ_ZX0"></iframe>
-<div class="overlay">Event</div>
-</div>
-</div>
+<div class="card"><div class="video-wrap" data-video="IhEfeBIoBrk" data-title="Event Film" data-desc="Cinematic wedding/event storytelling."><img src="https://img.youtube.com/vi/IhEfeBIoBrk/maxresdefault.jpg"><div class="overlay">Event</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="6KqZWw7Z1D4" data-title="Event Film" data-desc="Cinematic wedding/event storytelling."><img src="https://img.youtube.com/vi/6KqZWw7Z1D4/maxresdefault.jpg"><div class="overlay">Commercial</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="9i0ju0_MxlU" data-title="Event Film" data-desc="Cinematic wedding/event storytelling."><img src="https://img.youtube.com/vi/9i0ju0_MxlU/maxresdefault.jpg"><div class="overlay">AI</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="3ij7H_F44N4" data-title="Event Film" data-desc="Cinematic wedding/event storytelling."><img src="https://img.youtube.com/vi/3ij7H_F44N4/maxresdefault.jpg"><div class="overlay">Reel</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="hpizmJJ_ZX0" data-title="Event Film" data-desc="Cinematic wedding/event storytelling."><img src="https://img.youtube.com/vi/hpizmJJ_ZX0/maxresdefault.jpg"><div class="overlay">Event</div></div></div>
 
 </section>
 
+<!-- REELS (6 cards) -->
+<section class="section reels" id="reels">
+
+<div class="card"><div class="video-wrap" data-video="xLkA5XFgEtE" data-title="Event Film" data-desc="Cinematic wedding/event storytelling."><img src="https://img.youtube.com/vi/xLkA5XFgEtE/maxresdefault.jpg"><div class="overlay">Event</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="3ij7H_F44N4" data-title="Event Film" data-desc="Cinematic wedding/event storytelling."><img src="https://img.youtube.com/vi/3ij7H_F44N4/maxresdefault.jpg"><div class="overlay">Event</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="xLkA5XFgEtE" data-title="Event Film" data-desc="Cinematic wedding/event storytelling."><img src="https://img.youtube.com/vi/xLkA5XFgEtE/maxresdefault.jpg"><div class="overlay">Event</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="3ij7H_F44N4" data-title="Event Film" data-desc="Cinematic wedding/event storytelling."><img src="https://img.youtube.com/vi/3ij7H_F44N4/maxresdefault.jpg"><div class="overlay">Event</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="xLkA5XFgEtE" data-title="Event Film" data-desc="Cinematic wedding/event storytelling."><img src="https://img.youtube.com/vi/xLkA5XFgEtE/maxresdefault.jpg"><div class="overlay">Event</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="3ij7H_F44N4" data-title="Event Film" data-desc="Cinematic wedding/event storytelling."><img src="https://img.youtube.com/vi/3ij7H_F44N4/maxresdefault.jpg"><div class="overlay">Event</div></div></div>
+
+</section>
+
+
+<!-- Commercials -->
+
+<section class="section commercials" id="commercials">
+
+<div class="card"><div class="video-wrap" data-video="xLkA5XFgEtE" data-title="Event Film" data-desc="Cinematic wedding/event storytelling."><img src="https://img.youtube.com/vi/xLkA5XFgEtE/maxresdefault.jpg"><div class="overlay">Event</div></div></div>
+
+
+<div class="card"><div class="video-wrap" data-video="xLkA5XFgEtE" data-title="Event Film" data-desc="Cinematic wedding/event storytelling."><img src="https://img.youtube.com/vi/xLkA5XFgEtE/maxresdefault.jpg"><div class="overlay">Event</div></div></div>
+
+
+<div class="card"><div class="video-wrap" data-video="xLkA5XFgEtE" data-title="Event Film" data-desc="Cinematic wedding/event storytelling."><img src="https://img.youtube.com/vi/xLkA5XFgEtE/maxresdefault.jpg"><div class="overlay">Event</div></div></div>
+
+
+<div class="card"><div class="video-wrap" data-video="xLkA5XFgEtE" data-title="Event Film" data-desc="Cinematic wedding/event storytelling."><img src="https://img.youtube.com/vi/xLkA5XFgEtE/maxresdefault.jpg"><div class="overlay">Event</div></div></div>
+
+
+<div class="card"><div class="video-wrap" data-video="xLkA5XFgEtE" data-title="Event Film" data-desc="Cinematic wedding/event storytelling."><img src="https://img.youtube.com/vi/xLkA5XFgEtE/maxresdefault.jpg"><div class="overlay">Event</div></div></div>
+
+
+<div class="card"><div class="video-wrap" data-video="xLkA5XFgEtE" data-title="Event Film" data-desc="Cinematic wedding/event storytelling."><img src="https://img.youtube.com/vi/xLkA5XFgEtE/maxresdefault.jpg"><div class="overlay">Event</div></div></div>
+
+</section>
+
+
+<!-- Events -->
+
+<section class="section events" id="events">
+
+<div class="card"><div class="video-wrap" data-video="xLkA5XFgEtE" data-title="Event Film" data-desc="Cinematic wedding/event storytelling."><img src="https://img.youtube.com/vi/xLkA5XFgEtE/maxresdefault.jpg"></div></div>
+
+<div class="card"><div class="video-wrap" data-video="xLkA5XFgEtE" data-title="Event Film" data-desc="Cinematic wedding/event storytelling."><img src="https://img.youtube.com/vi/xLkA5XFgEtE/maxresdefault.jpg"><div class="overlay">Event</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="xLkA5XFgEtE" data-title="Event Film" data-desc="Cinematic wedding/event storytelling."><img src="https://img.youtube.com/vi/xLkA5XFgEtE/maxresdefault.jpg"><div class="overlay">Event</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="xLkA5XFgEtE" data-title="Event Film" data-desc="Cinematic wedding/event storytelling."><img src="https://img.youtube.com/vi/xLkA5XFgEtE/maxresdefault.jpg"><div class="overlay">Event</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="xLkA5XFgEtE" data-title="Event Film" data-desc="Cinematic wedding/event storytelling."><img src="https://img.youtube.com/vi/xLkA5XFgEtE/maxresdefault.jpg"><div class="overlay">Event</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="xLkA5XFgEtE" data-title="Event Film" data-desc="Cinematic wedding/event storytelling."><img src="https://img.youtube.com/vi/xLkA5XFgEtE/maxresdefault.jpg"><div class="overlay">Event</div></div></div>
+
+</section>
+
+
+<!-- Ai Videos -->
+
+<section class="section ai videos" id="ai">
+
+<div class="card"><div class="video-wrap" data-video="xLkA5XFgEtE" data-title="Event Film" data-desc="Cinematic wedding/event storytelling."><img src="https://img.youtube.com/vi/xLkA5XFgEtE/maxresdefault.jpg"><div class="overlay">Event</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="xLkA5XFgEtE" data-title="Event Film" data-desc="Cinematic wedding/event storytelling."><img src="https://img.youtube.com/vi/xLkA5XFgEtE/maxresdefault.jpg"><div class="overlay">Event</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="xLkA5XFgEtE" data-title="Event Film" data-desc="Cinematic wedding/event storytelling."><img src="https://img.youtube.com/vi/xLkA5XFgEtE/maxresdefault.jpg"><div class="overlay">Event</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="xLkA5XFgEtE" data-title="Event Film" data-desc="Cinematic wedding/event storytelling."><img src="https://img.youtube.com/vi/xLkA5XFgEtE/maxresdefault.jpg"><div class="overlay">Event</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="xLkA5XFgEtE" data-title="Event Film" data-desc="Cinematic wedding/event storytelling."><img src="https://img.youtube.com/vi/xLkA5XFgEtE/maxresdefault.jpg"><div class="overlay">Event</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="xLkA5XFgEtE" data-title="Event Film" data-desc="Cinematic wedding/event storytelling."><img src="https://img.youtube.com/vi/xLkA5XFgEtE/maxresdefault.jpg"><div class="overlay">Event</div></div></div>
+
+</section>
+
+</main>
+
 <!-- MODAL -->
 <div class="modal" id="modal">
-    <div class="modal-content">
-        <iframe id="modalVideo"></iframe>
-        <h2 id="modalTitle"></h2>
-        <p id="modalDesc"></p>
-    </div>
+<iframe id="modalVideo"></iframe>
+<h2 id="modalTitle"></h2>
+<p id="modalDesc"></p>
 </div>
 
 <footer class="footer">
 <b>Contact</b><br><br>
-Email : professionalrhk@gmail.com  |  Instagram : @edit.rhk
+Email : professionalrhk@gmail.com | Instagram : @edit.rhk
 </footer>
 
 <script>
-
-/* LOADER */
-window.onload=()=>document.getElementById("loader").style.display="none";
-
-/* FILTER + REELS MODE */
 const tabs=document.querySelectorAll(".tab");
-const cards=document.querySelectorAll(".card");
-const work=document.getElementById("work");
+const sections=document.querySelectorAll(".section");
 
 tabs.forEach(tab=>{
-    tab.onclick=()=>{
-        tabs.forEach(t=>t.classList.remove("active"));
-        tab.classList.add("active");
-
-        let f=tab.dataset.filter;
-
-        work.classList.toggle("reels-mode", f==="reels");
-
-        cards.forEach(c=>{
-            c.style.display=(f==="all"||c.dataset.category===f)?"block":"none";
-        });
-    };
+tab.onclick=()=>{
+tabs.forEach(t=>t.classList.remove("active"));
+tab.classList.add("active");
+sections.forEach(s=>s.classList.remove("active"));
+document.getElementById(tab.dataset.tab).classList.add("active");
+};
 });
 
-/* MODAL */
 const modal=document.getElementById("modal");
 const modalVideo=document.getElementById("modalVideo");
+const modalTitle=document.getElementById("modalTitle");
+const modalDesc=document.getElementById("modalDesc");
 
-document.querySelectorAll(".video-wrap").forEach(w=>{
-    w.onclick=()=>{
-        modal.style.display="flex";
-        modalVideo.src=w.querySelector("iframe").src+"?autoplay=1";
-    };
+document.querySelectorAll(".video-wrap").forEach(v=>{
+v.onclick=()=>{
+modal.style.display="flex";
+modalVideo.src="https://www.youtube.com/embed/"+v.dataset.video+"?autoplay=1";
+modalTitle.innerText=v.dataset.title||"";
+modalDesc.innerText=v.dataset.desc||"";
+};
 });
 
 modal.onclick=()=>{
-    modal.style.display="none";
-    modalVideo.src="";
+modal.style.display="none";
+modalVideo.src="";
 };
-
-/* HEADER SHRINK */
-const header=document.querySelector(".header");
-window.addEventListener("scroll",()=>{
-    header.style.padding=window.scrollY>50?"10px 30px":"15px 40px";
-});
-
 </script>
 
 </body>
