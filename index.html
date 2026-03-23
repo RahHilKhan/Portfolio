@@ -114,6 +114,77 @@ padding:60px;
 color:#ccc;
 margin-top:auto;
 }
+
+/* ===== TABLET ===== */
+@media (max-width: 1024px){
+.section{
+grid-template-columns:repeat(2,1fr);
+gap:25px;
+padding:120px 5% 40px;
+}
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 768px){
+
+.header{
+flex-direction:column;
+align-items:flex-start;
+gap:10px;
+padding:12px 20px;
+}
+
+/* Tabs scroll instead of breaking */
+.tabs{
+width:100%;
+overflow-x:auto;
+gap:10px;
+padding-bottom:5px;
+}
+.tabs::-webkit-scrollbar{
+display:none;
+}
+
+/* Profile smaller */
+.profile-box img{
+width:45px;
+height:45px;
+}
+.profile-text h1{
+font-size:16px;
+}
+.profile-text p{
+font-size:10px;
+}
+
+/* Grid becomes single column */
+.section{
+grid-template-columns:1fr;
+gap:20px;
+padding:140px 5% 40px;
+}
+
+/* Modal responsive */
+.modal iframe{
+width:95%;
+}
+
+.modal h2{
+font-size:18px;
+text-align:center;
+}
+
+.modal p{
+font-size:13px;
+padding:0 10px;
+}
+
+/* Footer tighter */
+.footer{
+padding:40px 20px;
+font-size:12px;
+}
+}
 </style>
 </head>
 
