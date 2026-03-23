@@ -115,6 +115,7 @@ color:#ccc;
 margin-top:auto;
 }
 
+
 /* ===== TABLET ===== */
 @media (max-width: 1024px){
 .section{
@@ -317,7 +318,7 @@ font-size:12px;
 
 <!-- MODAL -->
 <div class="modal" id="modal">
-<iframe id="modalVideo"></iframe>
+<iframe id="modalVideo" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 <h2 id="modalTitle"></h2>
 <p id="modalDesc"></p>
 </div>
@@ -348,7 +349,7 @@ const modalDesc=document.getElementById("modalDesc");
 document.querySelectorAll(".video-wrap").forEach(v=>{
 v.onclick=()=>{
 modal.style.display="flex";
-modalVideo.src="https://www.youtube.com/embed/"+v.dataset.video+"?autoplay=1";
+modalVideo.src="https://www.youtube.com/embed/"+v.dataset.video+"?autoplay=1&vq=hd1080&rel=0&modestbranding=1";
 modalTitle.innerText=v.dataset.title||"";
 modalDesc.innerText=v.dataset.desc||"";
 };
