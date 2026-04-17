@@ -101,8 +101,16 @@ justify-content:center;align-items:center;
 z-index:2000;
 }
 .modal iframe{
-width:80%;max-width:900px;
+width:80%;
+max-width:900px;
 aspect-ratio:16/9;
+transition:.3s;
+}
+
+/* Reel mode */
+.modal.reel iframe{
+aspect-ratio:9/16;
+max-width:400px;
 }
 .modal h2{margin-top:20px;}
 .modal p{color:#bbb;margin-top:10px;text-align:center;}
@@ -238,17 +246,18 @@ font-size:12px;
 <!-- REELS (6 cards) -->
 <section class="section reels" id="reels">
 
-<div class="card"><div class="video-wrap" data-video="3-HGzP7wpQI" data-title="Short Edit" data-desc="Short Form Edit"><img src="https://img.youtube.com/vi/3-HGzP7wpQI/maxresdefault.jpg"><div class="overlay">Event</div></div></div>
+<div class="card"><div class="video-wrap" data-video="3-HGzP7wpQI" data-type="reel" data-title="Short Edit" data-desc="Short Form Edit"><img src="https://img.youtube.com/vi/3-HGzP7wpQI/maxresdefault.jpg"><div class="overlay">Reel</div></div></div>
 
-<div class="card"><div class="video-wrap" data-video="9gYxFQhrdmw" data-title="Short Edit" data-desc="Short Form Edit"><img src="https://img.youtube.com/vi/9gYxFQhrdmw/maxresdefault.jpg"><div class="overlay">Event</div></div></div>
+<div class="card"><div class="video-wrap" data-video="nawx9JjO3aY" data-type="reel" data-title="Short Edit" data-desc="Short Form Edit"><img src="https://img.youtube.com/vi/nawx9JjO3aY/maxresdefault.jpg"><div class="overlay">Reel</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="hj32MDUnoqY" data-type="reel" data-title="Short Edit" data-desc="Short Form Edit"><img src="https://img.youtube.com/vi/hj32MDUnoqY/maxresdefault.jpg"><div class="overlay">Reel</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="9gYxFQhrdmw" data-type="reel" data-title="Short Edit" data-desc="Short Form Edit"><img src="https://img.youtube.com/vi/9gYxFQhrdmw/maxresdefault.jpg"><div class="overlay">Reel</div></div></div>
   
-<div class="card"><div class="video-wrap" data-video="Ld_e6FxgaFQ" data-title="Short Edit" data-desc="Short Form Edit"><img src="https://img.youtube.com/vi/Ld_e6FxgaFQ/maxresdefault.jpg"><div class="overlay">Event</div></div></div>
+<div class="card"><div class="video-wrap" data-video="Ld_e6FxgaFQ" data-type="reel" data-title="Short Edit" data-desc="Short Form Edit"><img src="https://img.youtube.com/vi/Ld_e6FxgaFQ/maxresdefault.jpg"><div class="overlay">Reel</div></div></div>
 
-<div class="card"><div class="video-wrap" data-video="APPZ4DptMiA" data-title="Short Edit" data-desc="Short Form Edit"><img src="https://img.youtube.com/vi/APPZ4DptMiA/maxresdefault.jpg"><div class="overlay">Event</div></div></div>
+<div class="card"><div class="video-wrap" data-video="APPZ4DptMiA" data-type="reel" data-title="Short Edit" data-desc="Short Form Edit"><img src="https://img.youtube.com/vi/APPZ4DptMiA/maxresdefault.jpg"><div class="overlay">Reel</div></div></div>
 
-<div class="card"><div class="video-wrap" data-video="hj32MDUnoqY" data-title="Short Edit" data-desc="Short Form Edit"><img src="https://img.youtube.com/vi/hj32MDUnoqY/maxresdefault.jpg"><div class="overlay">Event</div></div></div>
-
-<div class="card"><div class="video-wrap" data-video="nawx9JjO3aY" data-title="Short Edit" data-desc="Short Form Edit"><img src="https://img.youtube.com/vi/nawx9JjO3aY/maxresdefault.jpg"><div class="overlay">Event</div></div></div>
 
 </section>
 
@@ -347,17 +356,27 @@ const modalTitle=document.getElementById("modalTitle");
 const modalDesc=document.getElementById("modalDesc");
 
 document.querySelectorAll(".video-wrap").forEach(v=>{
-v.onclick=()=>{
-modal.style.display="flex";
-modalVideo.src="https://www.youtube.com/embed/"+v.dataset.video+"?autoplay=1&vq=hd1080&rel=0&modestbranding=1";
-modalTitle.innerText=v.dataset.title||"";
-modalDesc.innerText=v.dataset.desc||"";
-};
+    v.onclick=()=>{
+
+        modal.style.display="flex";
+        modalVideo.src="https://www.youtube.com/embed/"+v.dataset.video+"?autoplay=1&vq=hd1080";
+
+        /* SAFE CHECK */
+        if(v.dataset.type && v.dataset.type === "reel"){
+            modal.classList.add("reel");
+        } else {
+            modal.classList.remove("reel");
+        }
+
+        modalTitle.innerText = v.dataset.title || "";
+        modalDesc.innerText = v.dataset.desc || "";
+    };
 });
 
 modal.onclick=()=>{
-modal.style.display="none";
-modalVideo.src="";
+    modal.style.display="none";
+    modalVideo.src="";
+    modal.classList.remove("reel");
 };
 </script>
 
