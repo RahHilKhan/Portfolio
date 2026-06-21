@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Rah Hil Khan Portfolio</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+font-family:'Libre Caslon Text',serif;
+background:#000;color:#fff;
+
+display:flex;
+flex-direction:column;
+min-height:100vh;
+}
+
+/* HEADER */
+.header{
+position:fixed;top:0;width:100%;
+padding:15px 40px;
+display:flex;justify-content:space-between;align-items:center;
+background:rgba(0,0,0,0.6);
+backdrop-filter:blur(15px);
+z-index:1000;
+}
+
+.profile-box{display:flex;align-items:center;gap:15px;}
+.profile-box img{width:60px;height:60px;border-radius:50%;border:2px solid #d4af37;}
+.profile-text h1{font-size:20px;}
+.profile-text p{font-size:11px;color:#bbb;}
+
+.tabs{display:flex;gap:15px;}
+.tab{
+padding:6px 14px;border:1px solid rgba(212,175,55,0.4);
+border-radius:20px;font-size:12px;cursor:pointer;
+}
+.tab.active,.tab:hover{background:#d4af37;color:#000;}
+
+/* MAIN FIX */
+main{
+flex:1;
+}
+
+/* SECTIONS */
+.section{
+display:none;
+padding:130px 8% 60px;
+grid-template-columns:repeat(3,1fr);
+gap:40px;
+}
+.section.active{display:grid;}
+.section.reels img{aspect-ratio:9/16;object-fit:cover;}
+
+/* CARD */
+.card{
+border-radius:20px;
+overflow:hidden;
+transition:.4s;
+}
+.card:hover{
+transform:translateY(-10px) scale(1.03);
+box-shadow:0 10px 40px rgba(212,175,55,0.25);
+}
+
+/* VIDEO */
+.video-wrap{
+position:relative;
+cursor:pointer;
+overflow:hidden;
+}
+.video-wrap img{
+width:100%;
+transition:.4s;
+}
+.video-wrap:hover img{
+transform:scale(1.05);
+filter:brightness(0.8);
+}
+
+/* OVERLAY */
+.overlay{
+position:absolute;inset:0;
+display:flex;justify-content:center;align-items:center;
+background:rgba(0,0,0,0.4);
+opacity:0;transition:.3s;
+}
+.video-wrap:hover .overlay{opacity:1;}
+
+/* MODAL */
+.modal{
+position:fixed;inset:0;
+background:rgba(0,0,0,0.95);
+display:none;
+flex-direction:column;
+justify-content:center;align-items:center;
+z-index:2000;
+}
+.modal iframe{
+width:80%;
+max-width:900px;
+aspect-ratio:16/9;
+transition:.3s;
+}
+
+/* Reel mode */
+.modal.reel iframe{
+aspect-ratio:9/16;
+max-width:400px;
+}
+.modal h2{margin-top:20px;}
+.modal p{color:#bbb;margin-top:10px;text-align:center;}
+
+/* FOOTER */
+.footer{
+text-align:center;
+padding:60px;
+color:#ccc;
+margin-top:auto;
+}
+
+
+/* ===== TABLET ===== */
+@media (max-width: 1024px){
+.section{
+grid-template-columns:repeat(2,1fr);
+gap:25px;
+padding:120px 5% 40px;
+}
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 768px){
+
+.header{
+flex-direction:column;
+align-items:flex-start;
+gap:10px;
+padding:12px 20px;
+}
+
+/* Tabs scroll instead of breaking */
+.tabs{
+width:100%;
+overflow-x:auto;
+gap:10px;
+padding-bottom:5px;
+}
+.tabs::-webkit-scrollbar{
+display:none;
+}
+
+/* Profile smaller */
+.profile-box img{
+width:45px;
+height:45px;
+}
+.profile-text h1{
+font-size:16px;
+}
+.profile-text p{
+font-size:10px;
+}
+
+/* Grid becomes single column */
+.section{
+grid-template-columns:1fr;
+gap:20px;
+padding:140px 5% 40px;
+}
+
+/* Modal responsive */
+.modal iframe{
+width:95%;
+}
+
+.modal h2{
+font-size:18px;
+text-align:center;
+}
+
+.modal p{
+font-size:13px;
+padding:0 10px;
+}
+
+/* Footer tighter */
+.footer{
+padding:40px 20px;
+font-size:12px;
+}
+}
+
+.hero-slider{height:100vh;position:relative;background-size:cover;background-position:center;display:flex;align-items:center;padding:0 8%;overflow:hidden;transition:background-image 1s ease;}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,.85),rgba(0,0,0,.45),rgba(0,0,0,.75));}
+.hero-content{position:relative;z-index:2;max-width:700px;}
+.hero-tag{display:inline-block;padding:8px 16px;border:1px solid #d4af37;border-radius:999px;color:#d4af37;margin-bottom:20px;}
+.hero-content h1{font-size:60px;margin-bottom:20px;}
+.hero-content p{font-size:18px;color:#ddd;line-height:1.8;margin-bottom:30px;}
+.hero-buttons a{display:inline-block;padding:14px 28px;background:#d4af37;color:#000;text-decoration:none;font-weight:bold;border-radius:999px;}
+.progress{margin-top:30px;width:300px;height:4px;background:rgba(255,255,255,.2);overflow:hidden;}
+.progress-fill{height:100%;width:0%;background:#d4af37;}
+@keyframes progressAnim{from{width:0%}to{width:100%}}
+@media(max-width:768px){.hero-slider{height:100vh;padding:110px 5% 0}.hero-content h1{font-size:34px}.hero-content p{font-size:14px}}
+
+
+@media (max-width:768px){
+.hero-slider{height:100vh!important;padding-top:120px!important;}
+.hero-content{max-width:100%!important;}
+.hero-buttons a{padding:12px 22px!important;font-size:14px!important;}
+.modal iframe{width:96%!important;}
+.modal.reel iframe{width:90%!important;max-width:360px!important;}
+}
+
+</style>
+
+<style>
+body{font-family:'Inter',sans-serif!important;}
+.hero-intro{padding:120px 20px 40px;text-align:center;max-width:900px;margin:auto}
+.hero-avatar{width:140px;height:140px;border-radius:50%;border:3px solid #d4af37;object-fit:cover}
+.hero-intro h1{font-size:58px;margin:20px 0 10px}
+.hero-intro p{font-size:20px;color:#d4af37}
+.hero-intro span{display:block;max-width:700px;margin:15px auto;color:#bbb;line-height:1.7}
+.hero-slider{height:100vh!important;width:100%;max-width:none;margin:0;border-radius:0;overflow:hidden;padding-top:110px;box-sizing:border-box}
+.work-nav{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:25px 0}
+.theme-switcher{position:fixed;right:20px;bottom:20px;z-index:9999}
+.theme-switcher button{display:block;width:42px;height:42px;border-radius:50%;margin:8px 0;border:none;cursor:pointer}
+
+.tabs{
+background:rgba(212,175,55,.08);
+border:1px solid rgba(212,175,55,.25);
+padding:8px;
+border-radius:30px;
+backdrop-filter:blur(10px);
+}
+.theme-switcher{display:none;position:fixed;right:20px;bottom:80px;z-index:9999}
+.theme-toggle-btn{
+position:fixed;right:20px;bottom:20px;z-index:10000;
+width:52px;height:52px;border:none;border-radius:50%;
+background:#d4af37;color:#000;font-size:22px;cursor:pointer;
+font-weight:bold;
+}
+
+</style>
+
+<style>
+#intro-loader{
+position:fixed;
+inset:0;
+background:#000;
+z-index:999999;
+display:flex;
+justify-content:center;
+align-items:center;
+overflow:hidden;
+}
+
+/* Blue Breathing Cloud Ring */
+.loader-cloud{
+position:absolute;
+width:340px;
+height:340px;
+border-radius:50%;
+z-index:1;
+
+background:
+radial-gradient(
+circle,
+rgba(0,200,255,.55) 0%,
+rgba(0,140,255,.35) 35%,
+rgba(0,80,255,.25) 60%,
+transparent 80%
+);
+
+filter:blur(22px);
+
+box-shadow:
+0 0 30px rgba(0,170,255,.6),
+0 0 60px rgba(0,170,255,.4),
+0 0 120px rgba(0,170,255,.25);
+
+animation:cloudBreath 3s cubic-bezier(.4,0,.2,1) infinite;
+}
+
+@keyframes cloudBreath{
+0%{transform:scale(0.92);opacity:0.55;filter:blur(18px);}
+25%{transform:scale(1);opacity:0.8;filter:blur(22px);}
+50%{transform:scale(1.12);opacity:1;filter:blur(28px);}
+75%{transform:scale(1);opacity:0.8;filter:blur(22px);}
+100%{transform:scale(0.92);opacity:0.55;filter:blur(18px);}
+}
+
+/* Image */
+.loader-photo{
+width:260px;
+height:260px;
+object-fit:cover;
+border-radius:50%;
+position:relative;
+z-index:2;
+
+opacity:0;
+
+/* Visible Border */
+border:3px solid rgba(255,255,255,.45);
+
+/* Glow */
+box-shadow:
+0 0 15px rgba(255,255,255,.5),
+0 0 35px rgba(255,255,255,.35),
+0 0 70px rgba(212,175,55,.35);
+
+animation:introReveal 2.8s ease forwards;
+}
+
+@keyframes introReveal{
+0%{
+opacity:0;
+filter:brightness(0);
+}
+15%{
+opacity:1;
+filter:brightness(1.8) hue-rotate(90deg);
+}
+20%{
+filter:brightness(1);
+}
+25%{
+filter:hue-rotate(180deg);
+}
+30%{
+filter:hue-rotate(0deg);
+}
+70%{
+opacity:1;
+}
+100%{
+opacity:1;
+}
+}
+
+/* Accelerating Zoom-Out */
+#intro-loader.zoom-out{
+animation:loaderZoomOut 1.4s cubic-bezier(.15,.1,.05,1) forwards;
+}
+
+@keyframes loaderZoomOut{
+0%{
+transform:scale(1);
+opacity:1;
+}
+35%{
+transform:scale(1.15);
+opacity:1;
+}
+100%{
+transform:scale(8);
+opacity:0;
+}
+}
+</style>
+
+</head>
+
+<body>
+
+<div id="intro-loader">
+<div class="loader-cloud"></div>
+<img src="image1.png" class="loader-photo" alt="Rah Hil Khan">
+<audio id="glitchSfx" preload="auto" src="glitch.mp3"></audio>
+<audio id="zoomSfx" preload="auto" src="zoom out.mp3"></audio>
+</div>
+
+
+<!-- HEADER -->
+<div class="header">
+<div class="profile-box">
+<img src="image1.png">
+<div class="profile-text">
+<h1>Rah Hil Khan</h1>
+<p>Content Creator • AI Specialist • Video Editor</p>
+</div>
+</div>
+
+<div class="tabs">
+<div class="tab active" data-tab="all">All</div>
+<div class="tab" data-tab="reels">Reels</div>
+<div class="tab" data-tab="commercials">Commercials</div>
+<div class="tab" data-tab="events">Events</div>
+<div class="tab" data-tab="ai">AI Videos</div>
+</div>
+</div>
+
+
+<section class="hero-slider">
+<div class="hero-overlay"></div>
+<div class="hero-content">
+<span class="hero-tag">Featured Project</span>
+<h1 id="heroTitle"></h1>
+<p id="heroDesc"></p>
+<div class="hero-buttons">
+<a id="heroWatch" target="_blank">Watch Project</a>
+</div>
+<div class="progress"><div class="progress-fill"></div></div>
+</div>
+</section>
+
+<main>
+
+<!-- ALL (UNCHANGED 9 VIDEOS) -->
+<section class="section active" id="all">
+
+<div class="card"><div class="video-wrap" data-video="dKnHwncJd8w" data-title="MarDreamin Summit" data-desc="Mardreaming Summit Event Recap."><img src="https://img.youtube.com/vi/dKnHwncJd8w/maxresdefault.jpg"><div class="overlay">MarDreamin</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="xtP1h6M-BhE" data-title="Ferrero Event" data-desc="Event Highlight Edit."><img src="https://img.youtube.com/vi/xtP1h6M-BhE/maxresdefault.jpg"><div class="overlay">Ferrero</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="RQ4hMpByvW8" data-title="Madison Highlight" data-desc="Madison Event Recap Edit."><img src="https://img.youtube.com/vi/RQ4hMpByvW8/maxresdefault.jpg"><div class="overlay">Madison</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="xLkA5XFgEtE" data-title="Sysaid Summit" data-desc="Sysaid Summit Event Recap."><img src="https://img.youtube.com/vi/xLkA5XFgEtE/maxresdefault.jpg"><div class="overlay">Sysaid</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="IhEfeBIoBrk" data-title="50 Years Anniversary" data-desc="Cinematic Anniversary event edit."><img src="https://img.youtube.com/vi/IhEfeBIoBrk/maxresdefault.jpg"><div class="overlay">Shyam & Pushpa</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="6KqZWw7Z1D4" data-title="Wedding Recap" data-desc="Cinematic wedding Recap edit."><img src="https://img.youtube.com/vi/6KqZWw7Z1D4/maxresdefault.jpg"><div class="overlay">Gosvami Wedding</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="R6ObCawMYLM" data-title="Podcast Edit" data-desc="HPCLs HP Unplugged podcast Edit."><img src="https://img.youtube.com/vi/R6ObCawMYLM/maxresdefault.jpg"><div class="overlay">Podcast</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="hpizmJJ_ZX0" data-title="RHKGs Pubg Crate Opening" data-desc="Crate opening and guns skins display edit."><img src="https://img.youtube.com/vi/hpizmJJ_ZX0/maxresdefault.jpg"><div class="overlay">PUBG Crate opening</div></div></div>
+  
+<div class="card"><div class="video-wrap" data-video="xcey4TKdY3A" data-title="Scam 2022" data-desc="The First Short Film I ever Made, shot, edited, dubbed on a redmi phone and it was a big success🥰."><img src="https://img.youtube.com/vi/xcey4TKdY3A/maxresdefault.jpg"><div class="overlay">Short Film</div></div></div>
+
+</section>
+
+<!-- REELS (6 cards) -->
+<section class="section reels" id="reels">
+
+<div class="card"><div class="video-wrap" data-video="3-HGzP7wpQI" data-type="reel" data-title="Short Edit" data-desc="Short Form Edit"><img src="https://img.youtube.com/vi/3-HGzP7wpQI/maxresdefault.jpg"><div class="overlay">Reel</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="nawx9JjO3aY" data-type="reel" data-title="Short Edit" data-desc="Short Form Edit"><img src="https://img.youtube.com/vi/nawx9JjO3aY/maxresdefault.jpg"><div class="overlay">Reel</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="XDWiCAzqR7s" data-type="reel" data-title="Short Edit" data-desc="Short Form Edit"><img src="https://img.youtube.com/vi/XDWiCAzqR7s/maxresdefault.jpg"><div class="overlay">Reel</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="zNhx5e1hbPI" data-type="reel" data-title="Short Edit" data-desc="Short Form Edit"><img src="https://img.youtube.com/vi/zNhx5e1hbPI/maxresdefault.jpg"><div class="overlay">Reel</div></div></div>
+  
+<div class="card"><div class="video-wrap" data-video="Ld_e6FxgaFQ" data-type="reel" data-title="Short Edit" data-desc="Short Form Edit"><img src="https://img.youtube.com/vi/Ld_e6FxgaFQ/maxresdefault.jpg"><div class="overlay">Reel</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="OKqX4EG6k2U" data-type="reel" data-title="Short Edit" data-desc="Short Form Edit"><img src="https://img.youtube.com/vi/OKqX4EG6k2U/maxresdefault.jpg"><div class="overlay">Reel</div></div></div>
+
+</section>
+
+
+<!-- Commercials -->
+
+<section class="section commercials" id="commercials">
+
+<div class="card"><div class="video-wrap" data-video="xLkA5XFgEtE" data-title="Event Film" data-desc="Cinematic wedding/event storytelling."><img src="https://img.youtube.com/vi/xLkA5XFgEtE/maxresdefault.jpg"><div class="overlay">Event</div></div></div>
+
+
+<div class="card"><div class="video-wrap" data-video="xLkA5XFgEtE" data-title="Event Film" data-desc="Cinematic wedding/event storytelling."><img src="https://img.youtube.com/vi/xLkA5XFgEtE/maxresdefault.jpg"><div class="overlay">Event</div></div></div>
+
+
+<div class="card"><div class="video-wrap" data-video="xLkA5XFgEtE" data-title="Event Film" data-desc="Cinematic wedding/event storytelling."><img src="https://img.youtube.com/vi/xLkA5XFgEtE/maxresdefault.jpg"><div class="overlay">Event</div></div></div>
+
+
+<div class="card"><div class="video-wrap" data-video="xLkA5XFgEtE" data-title="Event Film" data-desc="Cinematic wedding/event storytelling."><img src="https://img.youtube.com/vi/xLkA5XFgEtE/maxresdefault.jpg"><div class="overlay">Event</div></div></div>
+
+
+<div class="card"><div class="video-wrap" data-video="xLkA5XFgEtE" data-title="Event Film" data-desc="Cinematic wedding/event storytelling."><img src="https://img.youtube.com/vi/xLkA5XFgEtE/maxresdefault.jpg"><div class="overlay">Event</div></div></div>
+
+
+<div class="card"><div class="video-wrap" data-video="xLkA5XFgEtE" data-title="Event Film" data-desc="Cinematic wedding/event storytelling."><img src="https://img.youtube.com/vi/xLkA5XFgEtE/maxresdefault.jpg"><div class="overlay">Event</div></div></div>
+
+</section>
+
+
+<!-- Events -->
+
+<section class="section events" id="events">
+
+<div class="card"><div class="video-wrap" data-video="dKnHwncJd8w" data-title="MarDreamin Summit" data-desc="Mardreaming Summit Event Recap."><img src="https://img.youtube.com/vi/dKnHwncJd8w/maxresdefault.jpg"><div class="overlay">MarDreamin</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="xtP1h6M-BhE" data-title="Ferrero Event" data-desc="Event Highlight Edit."><img src="https://img.youtube.com/vi/xtP1h6M-BhE/maxresdefault.jpg"><div class="overlay">Ferrero</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="RQ4hMpByvW8" data-title="Madison Highlight" data-desc="Madison Event Recap Edit."><img src="https://img.youtube.com/vi/RQ4hMpByvW8/maxresdefault.jpg"><div class="overlay">Madison</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="xLkA5XFgEtE" data-title="Sysaid Summit" data-desc="Sysaid Summit Event Recap."><img src="https://img.youtube.com/vi/xLkA5XFgEtE/maxresdefault.jpg"><div class="overlay">Sysaid</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="IhEfeBIoBrk" data-title="50 Years Anniversary" data-desc="Cinematic Anniversary event edit."><img src="https://img.youtube.com/vi/IhEfeBIoBrk/maxresdefault.jpg"><div class="overlay">Shyam & Pushpa</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="6KqZWw7Z1D4" data-title="Wedding Recap" data-desc="Cinematic wedding Recap edit."><img src="https://img.youtube.com/vi/6KqZWw7Z1D4/maxresdefault.jpg"><div class="overlay">Gosvami Wedding</div></div></div>
+
+</section>
+
+
+<!-- Ai Videos -->
+
+<section class="section ai videos" id="ai">
+
+<div class="card"><div class="video-wrap" data-video="hj32MDUnoqY" data-title="Goku Transformation" data-desc="An AI Video of me as kid goku transforming into super saiyan blue 😅"><img src="https://img.youtube.com/vi/hj32MDUnoqY/maxresdefault.jpg"><div class="overlay">Goku AI</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="vnyxFTdDCyQ" data-title="Vegetas Pride" data-desc="A fun AI Video of me as vegeta with an important message"><img src="https://img.youtube.com/vi/vnyxFTdDCyQ/maxresdefault.jpg"><div class="overlay">Vegeta AI</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="OKqX4EG6k2U" data-title="AI advertisement" data-desc="An Advertisement video I made using AI and some editing skills"><img src="https://img.youtube.com/vi/OKqX4EG6k2U/maxresdefault.jpg"><div class="overlay">Ayka solar AI ad</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="eRUcLPvG7zc" data-title="Quran Animation" data-desc="Quran recitations with animations created with Ai and basic editing"><img src="https://img.youtube.com/vi/eRUcLPvG7zc/maxresdefault.jpg"><div class="overlay">Ai animation</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="_vBrSDQ71X0" data-title="Quran Animation" data-desc="Quran recitations with animations created with Ai and basic editing"><img src="https://img.youtube.com/vi/_vBrSDQ71X0/maxresdefault.jpg"><div class="overlay">Ai animation</div></div></div>
+
+<div class="card"><div class="video-wrap" data-video="2Vwo1Rjb5zI" data-title="Eid Mubarak" data-desc="Ai video for EID in sync with the voiceover"><img src="https://img.youtube.com/vi/2Vwo1Rjb5zI/maxresdefault.jpg"><div class="overlay">Ai animation</div></div></div>
+
+</section>
+
+</main>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+<button id="closeModalBtn" style="position:absolute;top:20px;left:20px;padding:10px 18px;border:none;border-radius:30px;cursor:pointer;font-weight:bold;z-index:2100;">← Back</button>
+<iframe id="modalVideo" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<h2 id="modalTitle"></h2>
+<p id="modalDesc"></p>
+</div>
+
+
+<div class="contact-glass" style="max-width:1100px;margin:40px auto;padding:30px;border:1px solid rgba(212,175,55,.3);background:rgba(255,255,255,.06);backdrop-filter:blur(18px);border-radius:24px;">
+<h2 style="text-align:center;color:#d4af37;margin-bottom:25px;">Let's Work Together</h2>
+<div style="display:flex;flex-wrap:wrap;gap:20px;justify-content:center;">
+<div style="flex:1;min-width:260px;padding:20px;border-radius:18px;background:rgba(255,255,255,.04);"><h3>Email</h3><p>professionalrhk@gmail.com</p><a href="mailto:professionalrhk@gmail.com" style="display:inline-block;margin-top:10px;padding:10px 18px;background:#d4af37;color:#000;text-decoration:none;border-radius:999px;font-weight:bold;">Email Me</a></div>
+<div style="flex:1;min-width:260px;padding:20px;border-radius:18px;background:rgba(255,255,255,.04);"><h3>Instagram</h3><p>@edit.rhk</p><a href="https://www.instagram.com/edit.rhk/" target="_blank" style="display:inline-block;margin-top:10px;padding:10px 18px;background:#d4af37;color:#000;text-decoration:none;border-radius:999px;font-weight:bold;">Message Me</a></div>
+<div style="flex:1;min-width:260px;padding:20px;border-radius:18px;background:rgba(255,255,255,.04);"><h3>WhatsApp</h3><p>0123456789</p><a href="https://wa.me/0123456789?text=Hi%20Rah%20Hil" target="_blank" style="display:inline-block;margin-top:10px;padding:10px 18px;background:#d4af37;color:#000;text-decoration:none;border-radius:999px;font-weight:bold;">WhatsApp Me</a></div>
+</div></div>
+<footer class="footer">
+<b>Contact</b><br><br>
+If you like my work Contact me and if you have any suggestions my dms are open ✌️
+</footer>
+
+<script>
+const tabs=document.querySelectorAll(".tab");
+const sections=document.querySelectorAll(".section");
+
+tabs.forEach(tab=>{
+tab.onclick=()=>{
+tabs.forEach(t=>t.classList.remove("active"));
+tab.classList.add("active");
+sections.forEach(s=>s.classList.remove("active"));
+document.getElementById(tab.dataset.tab).classList.add("active");
+featuredProjects=sliderProjects[tab.dataset.tab]||sliderProjects.all;
+currentProject=0;
+updateHero();
+};
+});
+
+const modal=document.getElementById("modal");
+const modalVideo=document.getElementById("modalVideo");
+const modalTitle=document.getElementById("modalTitle");
+const modalDesc=document.getElementById("modalDesc");
+
+document.querySelectorAll(".video-wrap").forEach(v=>{
+    v.onclick=()=>{
+
+        modal.style.display="flex";
+        modalVideo.src="https://www.youtube.com/embed/"+v.dataset.video+"?autoplay=1&vq=hd1080";
+
+        /* SAFE CHECK */
+        if(v.dataset.type && v.dataset.type === "reel"){
+            modal.classList.add("reel");
+        } else {
+            modal.classList.remove("reel");
+        }
+
+        modalTitle.innerText = v.dataset.title || "";
+        modalDesc.innerText = v.dataset.desc || "";
+    };
+});
+
+document.getElementById('closeModalBtn').onclick=(e)=>{
+e.stopPropagation();
+modal.style.display='none';
+modalVideo.src='';
+modal.classList.remove('reel');
+};
+
+modal.onclick=()=>{
+    modal.style.display="none";
+    modalVideo.src="";
+    modal.classList.remove("reel");
+};
+
+
+const sliderProjects={
+all:[
+{title:"MarDreamin Summit Recap",desc:"Cinematic Event Recap edits and professional color grading.",image:"https://img.youtube.com/vi/dKnHwncJd8w/maxresdefault.jpg",link:"https://youtu.be/dKnHwncJd8w"},
+{title:"Ferrero Event Highlight",desc:"Ferrero 2025 Event highlight edit",image:"https://img.youtube.com/vi/xtP1h6M-BhE/maxresdefault.jpg",link:"https://youtu.be/xtP1h6M-BhE"},
+{title:"Madison Event Recap",desc:"Cinematic recap edit for Madison event.",image:"https://img.youtube.com/vi/RQ4hMpByvW8/maxresdefault.jpg",link:"https://youtu.be/RQ4hMpByvW8"}
+],
+reels:[
+{title:"Usa vs Iran",image:"https://img.youtube.com/vi/3-HGzP7wpQI/maxresdefault.jpg",link:"https://youtu.be/3-HGzP7wpQI"},
+{title:"School advertisement",image:"https://img.youtube.com/vi/nawx9JjO3aY/maxresdefault.jpg",link:"https://youtu.be/nawx9JjO3aY"}
+],
+commercials:[
+{title:"Commercial Showcase",desc:"Brand-focused commercial production.",image:"https://img.youtube.com/vi/xLkA5XFgEtE/maxresdefault.jpg",link:"https://youtu.be/xLkA5XFgEtE"}
+],
+events:[
+{title:"MarDreamin Summit Recap",image:"https://img.youtube.com/vi/dKnHwncJd8w/maxresdefault.jpg",link:"https://youtu.be/dKnHwncJd8w"},
+{title:"50 Years of togetherness",image:"https://img.youtube.com/vi/IhEfeBIoBrk/maxresdefault.jpg",link:"https://youtu.be/IhEfeBIoBrk"}
+],
+ai:[
+{title:"Goku Transformation",desc:"AI powered transformation video.",image:"https://img.youtube.com/vi/hj32MDUnoqY/maxresdefault.jpg",link:"https://youtu.be/hj32MDUnoqY"},
+{title:"Vegeta's Pride",desc:"AI storytelling and character creation.",image:"https://img.youtube.com/vi/vnyxFTdDCyQ/maxresdefault.jpg",link:"https://youtu.be/vnyxFTdDCyQ"}
+]
+};
+let featuredProjects=sliderProjects.all;
+const hero=document.querySelector(".hero-slider");
+const heroTitle=document.getElementById("heroTitle");
+const heroDesc=document.getElementById("heroDesc");
+const heroWatch=document.getElementById("heroWatch");
+const progress=document.querySelector(".progress-fill");
+let currentProject=0;
+function updateHero(){
+const project=featuredProjects[currentProject];
+hero.style.backgroundImage=`url(${project.image})`;
+heroTitle.textContent=project.title;
+heroDesc.textContent=project.desc;
+heroWatch.href=project.link;
+progress.style.animation="none";
+progress.offsetHeight;
+progress.style.animation="progressAnim 6s linear forwards";
+}
+updateHero();
+setInterval(()=>{
+currentProject=(currentProject+1)%featuredProjects.length;
+updateHero();
+},6000);
+
+
+document.getElementById('heroWatch').addEventListener('click',function(e){
+e.preventDefault();
+const project=featuredProjects[currentProject];
+const videoId=(project.link.match(/(?:youtu\.be\/|v=)([^?&]+)/)||[])[1];
+if(videoId){
+modal.style.display='flex';
+modal.classList.remove('reel');
+modalVideo.src='https://www.youtube.com/embed/'+videoId+'?autoplay=1&vq=hd1080';
+modalTitle.innerText=project.title;
+modalDesc.innerText=project.desc;
+}
+});
+
+</script>
+
+
+<button class="theme-toggle-btn" onclick="toggleThemePicker()">🎨</button>
+<div class="theme-switcher">
+<button style="background:#d4af37" onclick="theme('#141108','#ffffff','#d4af37')"></button>
+<button style="background:#dc2626" onclick="theme('#1f0808','#ffffff','#ef4444')"></button>
+<button style="background:#ff1493" onclick="theme('#1a0612','#ffffff','#ff1493')"></button>
+<button style="background:#2563eb" onclick="theme('#081229','#fff','#4da3ff')"></button>
+<button style="background:#16a34a" onclick="theme('#07150d','#fff','#00d26a')"></button>
+</div>
+<script>
+function theme(bg,text,accent){
+document.body.style.background=bg;
+document.body.style.color=text;
+document.documentElement.style.setProperty('--accent',accent);
+}
+
+function toggleThemePicker(){
+const picker=document.querySelector('.theme-switcher');
+picker.style.display=picker.style.display==='block'?'none':'block';
+}
+
+const slider=document.querySelector('.hero-slider');
+let startX=0;
+function nextSlide(dir){
+currentProject=(currentProject+dir+featuredProjects.length)%featuredProjects.length;
+updateHero();
+}
+if(slider){
+slider.addEventListener('mousedown',e=>{startX=e.clientX;});
+slider.addEventListener('mouseup',e=>{
+const diff=e.clientX-startX;
+if(Math.abs(diff)>50){ nextSlide(diff<0?1:-1); }
+});
+
+slider.addEventListener('touchstart',e=>{startX=e.touches[0].clientX;},{passive:true});
+slider.addEventListener('touchend',e=>{
+const diff=e.changedTouches[0].clientX-startX;
+if(Math.abs(diff)>50){ nextSlide(diff<0?1:-1); }
+},{passive:true});
+}
+</script>
+
+<script>
+window.addEventListener('load',()=>{
+const glitch=document.getElementById('glitchSfx');
+const zoom=document.getElementById('zoomSfx');
+const loader=document.getElementById('intro-loader');
+
+if(glitch){glitch.play().catch(()=>{});}
+
+setTimeout(()=>{
+if(zoom){zoom.play().catch(()=>{});}
+loader.classList.add('zoom-out');
+},2200);
+
+setTimeout(()=>{
+if(loader) loader.remove();
+},3800);
+});
+</script>
+
+</body>
+</html>
